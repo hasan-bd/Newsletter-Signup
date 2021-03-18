@@ -61,6 +61,11 @@ app.post('/', function(req, res) {
 
 })
 
+
+app.post('/failure',function(req,res){
+  res.redirect('/')
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
