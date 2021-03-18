@@ -44,10 +44,10 @@ app.post('/', function(req, res) {
   var jsonData = JSON.stringify(data)
   const request = https.request(url, option, function(response) {
     if (response.statusCode===200){
-      res.send('Sucessfully subscribed')
+      res.sendFile(__dirname + '/success.html')
     }
     else{
-    res.send('Please Try again letter')
+    res.sendFile(__dirname + '/failure.html')
     }
 
     response.on('data', function(data) {
