@@ -6,14 +6,16 @@ const app = express()
 const port = 3000
 
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/signup.html')
 })
 
 
-app.post('/',function(req,res){
+app.post('/', function(req, res) {
   const lastName = req.body.lName
   const firstName = req.body.fName
   const email = req.body.email
@@ -21,17 +23,15 @@ app.post('/',function(req,res){
   console.log(lastName)
   console.log(email)
 
-  const data ={
-    members: [
-      {
-        email_address: email,
-        status: "subscribed",
-      merge_fields:{
-        FNAME:firstName,
-        LNAME:lastName
+  const data = {
+    members: [{
+      email_address: email,
+      status: "subscribed",
+      merge_fields: {
+        FNAME: firstName,
+        LNAME: lastName
       }
-      }
-    ]
+    }]
   }
 
   const url = 'https://us1.api.mailchimp.com/3.0/lists/c12404477c'
@@ -42,8 +42,15 @@ app.post('/',function(req,res){
   }
 
   var jsonData = JSON.stringify(data)
-  const request = https.request(url,option,function(response){
-    response.on('data',function(data){
+  const request = https.request(url, option, function(response) {
+    if (response.statusCode===200){
+      res.send('Sucessfully subscribed')
+    }
+    else{
+    res.send('Please Try again letter')
+    }
+
+    response.on('data', function(data) {
       console.log(JSON.parse(data))
     })
   })
